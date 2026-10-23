@@ -1,14 +1,18 @@
-# Welcome to your CDK TypeScript project
+# AWS Visitor Counter API
 
-This is a blank project for CDK development with TypeScript.
+Serverless visitor counter API built with Node.js (TypeScript), AWS CDK, Lambda, API Gateway, and DynamoDB. Designed for the AWS Free Tier.
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+## Architecture
+[ Client ] -> [ API Gateway ] -> [ AWS Lambda ] -> [ DynamoDB ]
 
-## Useful commands
+## Endpoints
+* POST /visit?pageId={id} — Atomically increments and returns the visit count.
+* GET /visit?pageId={id} — Returns the current visit count.
 
-* `npm run build`   type-check the project
-* `npm run watch`   watch for changes and type-check
-* `npm run test`    perform the jest unit tests
-* `npx cdk deploy`  deploy this stack to your default AWS account/region
-* `npx cdk diff`    compare deployed stack with current state
-* `npx cdk synth`   emits the synthesized CloudFormation template
+## Engineering Trade-off
+The core logic, data access, and handler are co-located in a single file (`src/counter.ts`) to minimize Lambda Cold Starts and remove unnecessary abstraction layers for a single-purpose microservice.
+
+## Quick Start
+npm install
+cdk bootstrap
+cdk deploy
