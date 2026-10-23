@@ -2,8 +2,8 @@ import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from 'aws-lambda';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, UpdateCommand, GetCommand } from '@aws-sdk/lib-dynamodb';
 
-const client = new DynamoDBClient({});
-const docClient = DynamoDBDocumentClient.from(client);
+const dbClient = new DynamoDBClient({});
+const docClient = DynamoDBDocumentClient.from(dbClient);
 
 const TABLE_NAME = process.env.TABLE_NAME;
 
@@ -13,7 +13,6 @@ export const handler = async (event: APIGatewayProxyEventV2): Promise<APIGateway
 
   try {
     if (httpMethod === 'POST') {
-      // Incrementa o contador atomicamente
       const command = new UpdateCommand({
         TableName: TABLE_NAME,
         Key: { id: pageId },
@@ -36,7 +35,6 @@ export const handler = async (event: APIGatewayProxyEventV2): Promise<APIGateway
     }
 
     if (httpMethod === 'GET') {
-      // Apenas consulta a quantidade atual de visitas
       const command = new GetCommand({
         TableName: TABLE_NAME,
         Key: { id: pageId },
